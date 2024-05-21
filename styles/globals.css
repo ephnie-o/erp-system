@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply h-screen bg-gradient-to-b from-white to-green-50 text-gray-600;
+}
+
+.dark body {
+    @apply bg-gradient-radial from-start via-middle to-end h-screen text-gray-300;
+}
