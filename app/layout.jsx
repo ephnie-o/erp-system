@@ -1,8 +1,8 @@
 import '@styles/globals.css'
 
 export const metadata = {
-    title: 'Gold Erp',
-    description: 'ERP system for companies'
+    title: 'ERP System',
+    description: 'ERP system for pharmacy'
 }
 
 

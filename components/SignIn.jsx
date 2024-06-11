@@ -36,10 +36,10 @@ export const SignIn = () => {
   return (
     <div>
         <div>
-            <h2 className="mt-20 text-center text-2xl font-bold leading-9 tracking-tight">GOLD ERP</h2>
+            <h2 className="mt-20 text-center text-2xl font-bold leading-9 tracking-tight">ERP SYSTEM</h2>
         </div>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            <div className='px-6 py-12 sm:rounded-lg sm:px-12 bg-neutral-400 dark:bg-gray-800'>
+            <div className='px-6 py-12 sm:rounded-lg sm:px-12 bg-gray-400 bg-opacity-20 dark:bg-gray-800 shadow-2xl shadow-gray-800 dark:shadow-gray-700 dark:shadow-lg'>
                 <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
                     <div>
                         <div className="flex justify-between items-center">

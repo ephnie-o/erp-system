@@ -1,17 +1,17 @@
 'use client';
 
-import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, DocumentDuplicateIcon, CogIcon, MagnifyingGlassIcon, BellIcon, Bars3Icon, XMarkIcon, ChartBarIcon  } from '@heroicons/react/24/outline'
+import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, CogIcon, MagnifyingGlassIcon, BellIcon, Bars3Icon, XMarkIcon, ChartBarIcon  } from '@heroicons/react/24/outline'
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './Theme';
+import Link from 'next/link';
 
 const navigation = [
   {name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-  {name: 'Users' , href: '/users' , icon: UsersIcon },
-  {name: 'Account' , href: '/account' , icon: CogIcon },
-  {name: 'Projects' , href: '/projects' , icon: FolderIcon },
-  {name: 'Calendar' , href: '/calendar' , icon: CalendarIcon },
-  {name: 'Documentation' , href: '/documentation' , icon: DocumentDuplicateIcon },
+  {name: 'Inventory' , href: '/inventory' , icon: UsersIcon },
+  {name: 'Customers' , href: '/customers' , icon: CogIcon },
+  {name: 'Sales' , href: '/sales' , icon: FolderIcon },
+  {name: 'Reports' , href: '/reports' , icon: CalendarIcon },
 ]
 
 function classNames(...classes) {
@@ -32,17 +32,17 @@ const NavBar = () => {
 
   return (
     <div>
-      <div className={`absolute left-0 inset-y-0 z-50 flex w-72 flex-col transition-transform duration-300 ease-in-out transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        <div className="flex grow flex-col gap-y-5 overflow-y-aut0 bg-neutral-300 dark:bg-gray-700 dark:border-gray-950 border-r border-gray-400 px-6 pb-4">
+      <div className={`left-0 inset-y-0 z-50 fixed flex w-72 flex-col transition-transform duration-300 ease-in-out transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+        <div className="flex grow flex-col gap-y-5 overflow-y-aut0 bg-gray-200 shadow-lg dark:bg-gray-700 px-6 pb-4">
           <div className="flex h-16 shrink-0 justify-between items-center">
             <h2 className='font-bold text-xl tracking-wide'>GOLD ERP</h2>
             <button
             type="button"
             className="lg:hidden"
             onClick={() => setSidebarOpen(false)}
-          >
+            >
             <XMarkIcon className="h-6 w-6" style={{ strokeWidth: 3 }} aria-hidden="true" />
-          </button>
+            </button>
           </div>
           <nav className='flex flex-1 flex-col'>
             <ul role='list' className='flex flex-1 flex-col gap-y-7'>
@@ -50,7 +50,7 @@ const NavBar = () => {
                 <ul role='list' className='-mx-2 space-y-1'>
                   {navigation.map((item) => (
                     <li key={item.name}>
-                      <a
+                      <Link
                       href={item.href}
                       className={classNames(
                         currentPath === item.href
@@ -67,7 +67,7 @@ const NavBar = () => {
                         aria-hidden='true'
                         />
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -77,8 +77,8 @@ const NavBar = () => {
         </div>
       </div>
       <div className='flex flex-1 flex-col lg:ml-72'>
-        <div className='sticky top-0 z-40 w-full lg:mx-auto lg:max-w-7xl'>
-          <div className='flex h-16 items-center gap-x-4 border-b border-gray-200 bg-neutral-300 dark:bg-gray-700 dark:border-gray-950 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 lg:shadow-none'>
+        <div className='fixed top-0 w-full lg:mx-auto lg:max-w-6xl'>
+          <div className='flex h-16 items-center gap-x-4 bg-gray-200 dark:bg-gray-700 px-4 shadow-lg sm:gap-x-6 sm:px-6 lg:px-8'>
             <button
               type="button"
               className="-m-2.5 p-2.5 lg:hidden"
@@ -107,11 +107,11 @@ const NavBar = () => {
               </form>
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 <ThemeToggle />
-                <button type="button" className="-m-2.5 p-2.5 hover:text-gray-800">
+                <button type="button" className="-m-2.5 p-2.5 hover:text-green-700">
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-                <ChartBarIcon className='h-6 w-6 hover:text-gray-800 cursor-pointer' aria-hidden="true" />
+                <ChartBarIcon className='h-6 w-6 hover:text-green-700 cursor-pointer' aria-hidden="true" />
               </div>
             </div>
           </div>

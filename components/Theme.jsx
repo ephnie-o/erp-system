@@ -26,7 +26,7 @@ const ThemeToggle = () => {
           {isDarkMode ? (
             <SunIcon className="h-6 w-6 hover:text-green-700" />
           ) : (
-            <MoonIcon className="h-6 w-6  hover:text-gray-800" />
+            <MoonIcon className="h-6 w-6  hover:text-green-700" />
           )}
         </button>
     );

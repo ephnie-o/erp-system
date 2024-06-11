@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 body {
-    @apply h-screen bg-gradient-to-b from-white to-green-50 text-gray-600;
+    @apply h-screen bg-gradient-to-b from-gray-200 to-gray-200 text-gray-600;
 }
 
 .dark body {
-    @apply bg-gradient-radial from-start via-middle to-end h-screen text-gray-300;
+    @apply h-screen bg-gradient-to-b from-gray-800 to-gray-950 text-gray-300;
 }
+
+/* bg-gradient-radial from-start via-middle to-end h-screen text-gray-300 */
