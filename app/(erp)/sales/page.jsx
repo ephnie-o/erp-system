@@ -1,24 +1,36 @@
 'use client';
 
 import React, { useState } from 'react';
+import { initialCustomers } from '../customers/page';
+import { initialProducts } from '../inventory/page';
 
-const initialSales = [
+const getCurrentDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  let month = today.getMonth() + 1;
+  month = month < 10 ? '0' + month : month;
+  let day = today.getDate();
+  day = day < 10 ? '0' + day : day;
+  return `${year}-${month}-${day}`;
+};
+
+export const initialSales = [
   {
     id: 1,
-    date: '2024-05-20',
-    customerName: 'John Doe',
+    date: getCurrentDate(),
+    customerName: initialCustomers[0].name,
     items: [
-      { id: 1, productName: 'Aspirin', quantity: 2, price: 9.98 },
-      { id: 2, productName: 'Cough Syrup', quantity: 1, price: 8.99 },
+      { id: 1, productName: initialProducts[0].name, quantity: 2, price: initialProducts[0].price },
+      { id: 2, productName: initialProducts[1].name, quantity: 1, price: initialProducts[1].price },
     ],
   },
   {
     id: 2,
-    date: '2024-05-20',
-    customerName: 'Stephanie Odoom',
+    date: getCurrentDate(),
+    customerName: initialCustomers[1].name,
     items: [
-      { id: 1, productName: 'Steremed', quantity: 2, price: 150.00 },
-      { id: 2, productName: 'Sterevite', quantity: 1, price: 50.00 },
+      { id: 1, productName: initialProducts[1].name, quantity: 2, price: initialProducts[1].price },
+      { id: 2, productName: initialProducts[2].name, quantity: 1, price: initialProducts[2].price },
     ],
   },
 ];
@@ -26,7 +38,7 @@ const initialSales = [
 const Sales = () => {
   const [sales, setSales] = useState(initialSales);
   const [formState, setFormState] = useState({
-    date: '',
+    date: getCurrentDate(),
     customerName: '',
     items: [{ id: 0, productName: '', quantity: Number, price: Number }],
   });
@@ -39,10 +51,12 @@ const Sales = () => {
   const handleItemChange = (index, e) => {
     const { name, value } = e.target;
     const items = [...formState.items];
-    items[index] = {
-      ...items[index],
-      [name]: name === 'quantity' || name === 'price' ? parseFloat(value) : value
-    };
+    if (name === 'productName') {
+      const product = initialProducts.find(product => product.name === value);
+      items[index] = { ...items[index], [name]: value, price: product ? product.price : 0 };
+    } else {
+      items[index] = { ...items[index], [name]: parseFloat(value) };
+    }
     setFormState({ ...formState, items });
   };
 
@@ -72,20 +86,21 @@ const Sales = () => {
     e.preventDefault();
     const newSale = {
       id: sales.length + 1,
-      date: formState.date,
-      customerName: formState.customerName,
+      date: getCurrentDate(),
+      customerName: formState.customerName || 'Customer',
       items: formState.items,
       total: calculateTotal(formState.items),
     };
     setSales([...sales, newSale]);
     setFormState({
-      date: '',
+      date: getCurrentDate(),
       customerName: '',
       items: [{ id: 0, productName: '', quantity: Number, price: Number }],
     });
     setMessage('Sale added successfully');
     setTimeout(() => setMessage(''), 3000);
   };
+
 
   return (
     <main className='pt-20 pb-5'>
@@ -105,30 +120,35 @@ const Sales = () => {
               required
               aria-label="Sale Date"
             />
-            <input
-              type="text"
+            <select
               name="customerName"
-              value={formState.customerName}
               onChange={handleFormChange}
-              placeholder="Customer Name"
+              value={formState.customerName}
               className="p-2 border rounded dark:text-gray-700"
-              required
               aria-label="Customer Name"
-            />
+            >
+              <option value="">Select Customer</option>
+              {initialCustomers.map((customer, index) =>(
+                <option key={index} value={customer.name}>{customer.name}</option>
+              ))}
+            </select>
           </div>
           <h3 className="text-xl font-bold mt-4">Items</h3>
           {formState.items.map((item, index) => (
             <div key={index} className="grid grid-cols-4 gap-4 my-2">
-              <input
-                type="text"
+              <select
                 name="productName"
-                value={item.productName}
                 onChange={(e) => handleItemChange(index, e)}
-                placeholder="Product Name"
-                className="p-2 border rounded dark:text-gray-700"
+                value={item.productName}
+                className="p-1 border rounded dark:text-gray-700"
                 required
                 aria-label={`Product Name ${index + 1}`}
-              />
+              >
+                <option value="">Select Product</option>
+                {initialProducts.map((product, index) =>(
+                  <option key={index} value={product.name}>{product.name}</option>
+                ))}
+              </select>
               <input
                 type="number"
                 name="quantity"
@@ -148,6 +168,7 @@ const Sales = () => {
                 className="p-2 border rounded dark:text-gray-700"
                 required
                 aria-label={`Price ${index + 1}`}
+                disabled
               />
               <button
                 type="button"

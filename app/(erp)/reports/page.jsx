@@ -1,14 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useGlobalState } from '@context/GlobalStateContext';
+import { useEffect, useState } from 'react';
+import { initialProducts } from '../inventory/page';
+import { initialCustomers } from '../customers/page';
+import { initialSales } from '../sales/page';
 
 const Reports = () => {
-  const { products, sales, customers } = useGlobalState();
+
+  const [products] = useState(initialProducts);
+  const [sales] = useState(initialSales);
+  const [customers] = useState(initialCustomers);
   const [totalSales, setTotalSales] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [totalCustomers, setTotalCustomers] = useState(0);
+
+  const calculateTotal = (items) => {
+    return items.reduce((acc, item) => acc + item.quantity * item.price, 0);
+  };
 
   useEffect(() => {
     // Calculate total sales
@@ -16,16 +24,13 @@ const Reports = () => {
     setTotalSales(totalSalesCount);
 
     // Calculate total revenue
-    const totalRevenueAmount = sales.reduce((acc, sale) => acc + sale.total, 0);
+    const totalRevenueAmount = sales.reduce((acc, sale) => acc + sale.items.reduce((acc, item) => acc + item.quantity * item.price, 0), 0);
     setTotalRevenue(totalRevenueAmount);
 
     // Calculate total products
     const totalProductsCount = products.reduce((acc, product) => acc + product.quantity, 0);
     setTotalProducts(totalProductsCount);
-
-    // Calculate total customers
-    setTotalCustomers(customers.length);
-  }, [products, sales, customers]);
+  }, [products, sales]);
 
   return (
     <main className='pt-20 pb-5'>
@@ -40,16 +45,16 @@ const Reports = () => {
               <p className="text-3xl">{totalProducts}</p>
             </div>
             <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded shadow">
-              <h3 className="text-xl font-semibold">Total Sales</h3>
+              <h3 className="text-xl font-semibold">Total Number of Sales</h3>
               <p className="text-3xl">{totalSales}</p>
             </div>
             <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded shadow">
               <h3 className="text-xl font-semibold">Total Revenue</h3>
-              <p className="text-3xl">${totalRevenue.toFixed(2)}</p>
+              <p className="text-3xl">${totalRevenue}</p>
             </div>
             <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded shadow">
               <h3 className="text-xl font-semibold">Total Customers</h3>
-              <p className="text-3xl">{totalCustomers}</p>
+              <p className="text-3xl">{customers.length}</p>
             </div>
           </div>
         </section>
@@ -82,7 +87,7 @@ const Reports = () => {
 
         <section className="mb-8">
           <h2 className="text-xl font-bold mb-2">Sales Report</h2>
-          <table className="min-w-full bg-gray-100 dark:bg-gray-800">
+          <table className="min-w-full max-w-20 bg-gray-100 dark:bg-gray-800">
             <thead>
               <tr>
                 <th className="py-2 px-4 border">Date</th>
@@ -96,7 +101,7 @@ const Reports = () => {
                 <tr key={sale.id}>
                   <td className="py-2 px-4 border">{sale.date}</td>
                   <td className="py-2 px-4 border">{sale.customerName}</td>
-                  <td className="py-2 px-4 border">${sale.total.toFixed(2)}</td>
+                  <td className="py-2 px-4 border">${calculateTotal(sale.items).toFixed(2)}</td>
                   <td className="py-2 px-4 border">
                     <details>
                       <summary>View Items</summary>

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 
-const initialProducts = [
+export const initialProducts = [
   { id: 1, name: 'Aspirin', description: 'Pain reliever', category: 'Medicine', price: 4.99, quantity: 50 },
   { id: 2, name: 'Cough Syrup', description: 'Cough suppressant', category: 'Medicine', price: 8.99, quantity: 30 },
   { id: 3, name: 'Steremed', description: 'Brain supplement', category: 'Medicine', price: 75.00, quantity: 50},

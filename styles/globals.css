@@ -10,4 +10,4 @@ body {
     @apply h-screen bg-gradient-to-b from-gray-800 to-gray-950 text-gray-300;
 }
 
-/* bg-gradient-radial from-start via-middle to-end h-screen text-gray-300 */
+/* radial background = bg-gradient-radial from-start via-middle to-end h-screen text-gray-300 */

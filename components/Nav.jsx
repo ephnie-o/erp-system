@@ -1,10 +1,11 @@
 'use client';
 
-import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, CogIcon, MagnifyingGlassIcon, BellIcon, Bars3Icon, XMarkIcon, ChartBarIcon  } from '@heroicons/react/24/outline'
-import { useState, useEffect } from 'react';
+import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, CogIcon, MagnifyingGlassIcon, BellIcon, Bars3Icon, XMarkIcon, ChevronDownIcon  } from '@heroicons/react/24/outline'
+import { useState, useEffect, Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './Theme';
 import Link from 'next/link';
+import { Menu, MenuItems, MenuButton, MenuItem, Transition } from '@headlessui/react';
 
 const navigation = [
   {name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
@@ -12,6 +13,10 @@ const navigation = [
   {name: 'Customers' , href: '/customers' , icon: CogIcon },
   {name: 'Sales' , href: '/sales' , icon: FolderIcon },
   {name: 'Reports' , href: '/reports' , icon: CalendarIcon },
+]
+
+const userNavigation = [
+  {name: 'Log out', href: '/'},
 ]
 
 function classNames(...classes) {
@@ -30,12 +35,16 @@ const NavBar = () => {
     }
   }, [pathname]);
 
+  const handleLinkClick = () => {
+    setSidebarOpen(false);
+  };
+
   return (
     <div>
       <div className={`left-0 inset-y-0 z-50 fixed flex w-72 flex-col transition-transform duration-300 ease-in-out transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         <div className="flex grow flex-col gap-y-5 overflow-y-aut0 bg-gray-200 shadow-lg dark:bg-gray-700 px-6 pb-4">
           <div className="flex h-16 shrink-0 justify-between items-center">
-            <h2 className='font-bold text-xl tracking-wide'>GOLD ERP</h2>
+            <h2 className='font-bold text-xl tracking-wide'>ERP SYSTEM</h2>
             <button
             type="button"
             className="lg:hidden"
@@ -52,6 +61,7 @@ const NavBar = () => {
                     <li key={item.name}>
                       <Link
                       href={item.href}
+                      onClick={handleLinkClick}
                       className={classNames(
                         currentPath === item.href
                         ? 'bg-gradient-to-r from-green-800 to-green-950 text-white'
@@ -111,7 +121,49 @@ const NavBar = () => {
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-                <ChartBarIcon className='h-6 w-6 hover:text-green-700 cursor-pointer' aria-hidden="true" />
+                <Menu as="div" className="relative">
+                  <MenuButton className="-m-1.5 flex items-center p-1.5">
+                    <span className="sr-only">Open user menu</span>
+                    <img
+                      className="h-8 w-8 rounded-full bg-gray-50"
+                      src="/assets/images/profilepic.jpg"
+                      alt="Profile picture"
+                    />
+                    <span className="hidden lg:flex lg:items-center">
+                      <span className="ml-4 text-sm font-semibold leading-6" aria-hidden="true">
+                        stephanie
+                      </span>
+                      <ChevronDownIcon className="ml-2 h-5 w-5" aria-hidden="true" />
+                    </span>
+                  </MenuButton>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <MenuItems className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                      {userNavigation.map((item) => (
+                        <MenuItem key={item.name}>
+                          {({ active }) => (
+                            <Link
+                              href={item.href}
+                              className={classNames(
+                                active ? 'bg-gray-50' : '',
+                                'block px-3 py-1 text-sm leading-6 text-gray-900'
+                              )}
+                            >
+                              {item.name}
+                            </Link>
+                          )}
+                        </MenuItem>
+                      ))}
+                    </MenuItems>
+                  </Transition>
+                </Menu>
               </div>
             </div>
           </div>
@@ -122,50 +174,3 @@ const NavBar = () => {
 }
 
 export default NavBar
-
-
-
- {/* Profile dropdown */}
-                {/* <Menu as="div" className="relative">
-                  <Menu.Button className="-m-1.5 flex items-center p-1.5">
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      className="h-8 w-8 rounded-full bg-gray-50"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
-                    />
-                    <span className="hidden lg:flex lg:items-center">
-                      <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-                        Tom Cook
-                      </span>
-                      <ChevronDownIcon className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
-                    </span>
-                  </Menu.Button>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                      {userNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
-                          {({ active }) => (
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                active ? 'bg-gray-50' : '',
-                                'block px-3 py-1 text-sm leading-6 text-gray-900'
-                              )}
-                            >
-                              {item.name}
-                            </a>
-                          )}
-                        </Menu.Item>
-                      ))}
-                    </Menu.Items>
-                  </Transition>
-                </Menu> */}

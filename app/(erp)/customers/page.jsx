@@ -1,18 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-// type Customer = {
-//   id: number;
-//   name: string;
-//   email: string;
-//   phone: string;
-//   address: string;
-// };
-
-const initialCustomers = [
+export const initialCustomers = [
   { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123-456-7890', address: '123 Main St' },
   { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '987-654-3210', address: '456 Elm St' },
+  { id: 3, name: 'Stephanie Odoom', email: 'styzyl18@gmail.com', phone: '020-915-6415', address: '63 Diamond Villa' },
 ];
 
 const Customers = () => {

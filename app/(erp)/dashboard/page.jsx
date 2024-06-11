@@ -1,6 +1,38 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { initialProducts } from '../inventory/page';
+import { initialCustomers } from '../customers/page';
+import { initialSales } from '../sales/page';
 
 const Dashboard = () => {
+
+  const [products] = useState(initialProducts);
+  const [sales] = useState(initialSales);
+  const [customers] = useState(initialCustomers);
+  const [totalSales, setTotalSales] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
+
+  const calculateTotal = (items) => {
+    return items.reduce((acc, item) => acc + item.quantity * item.price, 0);
+  };
+
+  useEffect(() => {
+    // Calculate total sales
+    const totalSalesCount = sales.reduce((acc, sale) => acc + sale.items.reduce((itemAcc, item) => itemAcc + item.quantity, 0), 0);
+    setTotalSales(totalSalesCount);
+
+    // Calculate total revenue
+    const totalRevenueAmount = sales.reduce((acc, sale) => acc + sale.items.reduce((acc, item) => acc + item.quantity * item.price, 0), 0);
+    setTotalRevenue(totalRevenueAmount);
+
+    // Calculate total products
+    const totalProductsCount = products.reduce((acc, product) => acc + product.quantity, 0);
+    setTotalProducts(totalProductsCount);
+  }, [products, sales]);
+
   return (
     <main className='pt-20 pb-5'>
       <div className='px-4 sm:px-6 lg:px-8 lg:ml-72'>
@@ -32,19 +64,19 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded shadow">
               <h3 className="text-xl font-semibold">Total Products</h3>
-              <p className="text-3xl">1200</p>
+              <p className="text-3xl">{totalProducts}</p>
             </div>
             <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded shadow">
-              <h3 className="text-xl font-semibold">Total Sales</h3>
-              <p className="text-3xl">$25,000</p>
+              <h3 className="text-xl font-semibold">Total Number of Sales</h3>
+              <p className="text-3xl">{totalSales}</p>
             </div>
             <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded shadow">
               <h3 className="text-xl font-semibold">Total Customers</h3>
-              <p className="text-3xl">300</p>
+              <p className="text-3xl">{customers.length}</p>
             </div>
             <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded shadow">
-              <h3 className="text-xl font-semibold">Pending Orders</h3>
-              <p className="text-3xl">5</p>
+              <h3 className="text-xl font-semibold">Total Revenue</h3>
+              <p className="text-3xl">${totalRevenue}</p>
             </div>
           </div>
         </section>
